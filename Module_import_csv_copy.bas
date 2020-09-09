@@ -8,6 +8,7 @@ Dim FileName As Variant
 Dim sqlstring As String
 
 Set ws = ActiveSheet 'set to current worksheet name
+ws.Name = "Raw"
 
 'Get the file name
 FileName = Application.GetOpenFilename(FileFilter:="All Files (*.csv),*.csv", FilterIndex:=1, Title:="Select the CSV file", MultiSelect:=False)
@@ -31,22 +32,14 @@ Application.StatusBar = "Reading the file... Done"
 Application.ScreenUpdating = True
 
 
-'Dim myUsedRange As Range
-'Dim LastRow As Long, LastColumn As Long
-'LastRow = Cells.Find(What:="*", After:=Range("A1"), SearchOrder:=xlByRows, SearchDirection:=xlPrevious).Row
-'LastColumn = Cells.Find(What:="W_SYS", After:=Range("A1"), SearchOrder:=xlByColumns, SearchDirection:=xlPrevious).Column
-'Range("A1").Resize(LastRow, LastColumn).Select
-  'MsgBox "The data range address is " & Selection.Address(0, 0) & ".", 64, "Data-containing range address:"
-'MsgBox "LastRow : " & LastRow & "LastColumn : " & LastColumn
 
-
-
-Dim FirstRow&, FirstCol&, LastRow&, LastCol&
+Dim FirstRow&, FirstCol&, SecondRow&, SecondCol&
 Dim myUsedRange As Range
-FirstRow = Cells.Find(What:="W_SYS", SearchDirection:=xlNext, SearchOrder:=xlByRows).Row
+
+FirstRow = Cells.Find(What:="TIME", SearchDirection:=xlNext, SearchOrder:=xlByRows).Row
 
 On Error Resume Next
-FirstCol = Cells.Find(What:="W_SYS", SearchDirection:=xlNext, SearchOrder:=xlByColumns).Column
+FirstCol = Cells.Find(What:="TIME", SearchDirection:=xlNext, SearchOrder:=xlByColumns).Column
 If Err.Number <> 0 Then
     Err.Clear
     MsgBox _
@@ -55,15 +48,33 @@ If Err.Number <> 0 Then
     Exit Sub
 End If
 
-'LastRow = Cells.Find(What:="*", SearchDirection:=xlPrevious, SearchOrder:=xlByRows).Row
-'LastCol = Cells.Find(What:="*", SearchDirection:=xlPrevious, SearchOrder:=xlByColumns).Column
-'Set myUsedRange = Range(Cells(FirstRow, FirstCol), Cells(.Row, .CurrentRegion.Column))
-'myUsedRange.Select
 Set myUsedRange = Range(Cells(FirstRow, FirstCol), Cells(FirstRow, FirstCol).End(xlDown)).Copy
 myUsedRange.Select
 
 Worksheets.Add(Before:=ws).Name = "EDChart"
 ActiveSheet.Paste
+
+'Raw Sheet 로 다시 돌아감
+Sheets("Raw").Activate
+'Worksheets("Raw").Activate
+SecondRow = Cells.Find(What:="W_SYS", SearchDirection:=xlNext, SearchOrder:=xlByRows).Row
+
+On Error Resume Next
+SecondCol = Cells.Find(What:="W_SYS", SearchDirection:=xlNext, SearchOrder:=xlByColumns).Column
+If Err.Number <> 0 Then
+    
+    MsgBox _
+    "에러 발생 W_SYS : " & Err.Number & _
+     vbCrLf
+     
+    Err.Clear
+    
+    Exit Sub
+End If
+
+
+Range(Cells(SecondRow, SecondCol), Cells(SecondRow, SecondCol).End(xlDown)).Copy _
+Worksheets("EDChart").Range("B1")
 
 End Sub
 
