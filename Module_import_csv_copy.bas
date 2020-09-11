@@ -1,8 +1,8 @@
-Attribute VB_Name = "Module_import_csv"
+Attribute VB_Name = "Module_import_csv_copy"
 Option Explicit
 
 
-Sub CSV_Import_Copy()
+Sub Import_CSV_Copy()
 Dim ws As Worksheet
 Dim FileName As Variant
 Dim sqlstring As String
@@ -75,8 +75,28 @@ End If
 
 Range(Cells(SecondRow, SecondCol), Cells(SecondRow, SecondCol).End(xlDown)).Copy _
 Worksheets("EDChart").Range("B1")
+Sheets("EDChart").Activate
+
+
+Dim LR As Long, i As Long
+LR = Range("B" & Rows.Count).End(xlUp).Row
+For i = 2 To LR
+    With Range("B" & i)
+        .Value = Left(.Value, 8)
+    End With
+Next i
 
 End Sub
 
 
+
+Sub Cpy()
+Dim LR As Long, i As Long
+LR = Range("D" & Rows.Count).End(xlUp).Row
+For i = 2 To LR
+    With Range("D" & i)
+        .Offset(, 7) = Left(.Value, 8)
+    End With
+Next i
+End Sub
 
