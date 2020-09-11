@@ -100,3 +100,11 @@ For i = 2 To LR
 Next i
 End Sub
 
+Sub Chart_SeriesChange(ByVal SeriesIndex As Long, _
+        ByVal PointIndex As Long)
+'    Set p = ActiveChart.SeriesCollection(SeriesIndex). _
+ '       Points(PointIndex)
+  '  p.Border.ColorIndex = 3
+  msg "call Char_SeriesChange()"
+End Sub
+
