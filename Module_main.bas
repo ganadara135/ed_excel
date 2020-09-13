@@ -1,8 +1,8 @@
 Attribute VB_Name = "Module_main"
 Option Explicit
 
-Dim myChart As EmChartClass
-
+Dim myChart As EmChartClass     '전역변수로 작동 안함
+'Dim myChart2 As EmChartClass
 
 Sub main()
 
@@ -31,9 +31,6 @@ MsgBoxCheck ("차트에서 시작점과 종료점을 한번씩 클릭하세요")
 
 
 
-
-
-
 Range("C1").Value = "차이"
 Dim LR As Long, i As Long
 LR = Range("B" & Rows.Count).End(xlUp).Row
@@ -47,12 +44,16 @@ Next i
 
 Range("D1").Value = "변곡점"
 
+UserForm_Progress.CommandButton1.BackColor = &H8000000D
+UserForm_Progress.Show vbModeless
+
+DoEvents
+
 End Sub
 
-Sub activateChartEvent()
- Set myChart = New EmChartClass
-End Sub
-
+'Sub activateChartEvent()
+' Set myChart = New EmChartClass
+'End Sub
 
 Sub ResizeChart(rowSize As Integer)
    With ActiveChart.Parent

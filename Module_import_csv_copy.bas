@@ -88,18 +88,6 @@ Next i
 
 End Sub
 
-
-
-Sub Cpy()
-Dim LR As Long, i As Long
-LR = Range("D" & Rows.Count).End(xlUp).Row
-For i = 2 To LR
-    With Range("D" & i)
-        .Offset(, 7) = Left(.Value, 8)
-    End With
-Next i
-End Sub
-
 Sub Chart_SeriesChange(ByVal SeriesIndex As Long, _
         ByVal PointIndex As Long)
 '    Set p = ActiveChart.SeriesCollection(SeriesIndex). _
